@@ -1,0 +1,82 @@
+---
+title: "Investigation of the exponential distribution"
+author: "Rinnette Ramdhanie"
+date: "8 November 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r setupLib, warning = FALSE, message = FALSE}
+        library(ggplot2)
+        lambda <- 0.2
+```
+
+## Overview
+
+
+
+## Simulating the distributions
+
+Exponential distribution
+lambda = 0.2 (rate parmeter for the exp distr)
+investigating the averages of 40 exponentials
+Doing 1000 simulations
+
+
+```{r simDistr}
+        ## Simulate 40 exponentials one thousand times and find the average means and variances.
+                means <- NULL
+                for (i in 1:1000) means = c(means, mean(rexp(40, 0.2)))
+        
+                vars <- NULL
+                for (i in 1:1000) vars = c(vars, sd(rexp(40, 0.2))^2)
+
+        ## Convert to dataframes to be used in ggplot2
+                mns <- data.frame(means)
+                vrs <- data.frame(vars)
+```
+
+## Comparing the means
+
+Mean of exponential distribution is 1/lambda (how to do Greek letter?).  In this case 1/0.2 or 5.
+Plot histogram of average means and add a line to show the theoretical mean.
+
+```{r plotMeans}
+        ## Calculate the distribution and the theoretical means and store in a dataframe to be used in ggplot
+                distMean <- mean(means)
+                theoMean <- 1/lambda
+
+                central_means <- data.frame(statistic = c("distMean", "theoMean"),
+                             value = c(distMean, theoMean))
+                
+        ## Plot the average means on a histogram and compare to the theoretical mean
+                ggplot(mns, aes(x=means)) + 
+                        geom_histogram(col = "white", fill = "#68AFEA") +
+                        scale_x_continuous(name = "Average Mean", breaks=seq(0, 8, 1)) +
+                        labs(y = "Frequency") +
+                        geom_vline(aes(xintercept=theoMean), color="blue", linetype="dashed", size=1) +
+                        labs(title="Distribution of the averages of 40 exponentials over 1000 simulations")
+```
+
+## Comparing the Variances
+
+Variance of the exponential distribution is (1/lambda )^2 or 25 in this case.
+Plot histogram of average variances and add a line to show the theoretical variance.
+
+```{r plotVars}
+        ## Calculate the theoretical variance
+                theoVar <- (1/lambda)^2
+        ## Plot the average variances on a histogram and compare to the theoretical variance
+                ggplot(vrs, aes(x=vars)) + 
+                        geom_histogram(col = "white", fill = "#85CD8F") +
+                        labs(x = "Average Variance", y = "Frequency") +
+                        geom_vline(aes(xintercept=theoVar), color="#265B2F", linetype="dashed", size=1) +
+                        labs(title="Distribution of the variances of 40 exponentials over 1000 simulations")
+```
+
+
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
