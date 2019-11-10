@@ -45,20 +45,24 @@ Mean of exponential distribution is 1/lambda (how to do Greek letter?).  In this
 Plot histogram of average means and add a line to show the theoretical mean.
 
 ```{r plotMeans}
-        ## Calculate the distribution and the theoretical means and store in a dataframe to be used in ggplot
+        ## Calculate the distribution and theoretical means and store in a dataframe to be used in ggplot
                 distMean <- mean(means)
                 theoMean <- 1/lambda
 
-                central_means <- data.frame(statistic = c("distMean", "theoMean"),
+                central_means <- data.frame(statistic = c("Distribution Mean", "Theoretical Mean"),
                              value = c(distMean, theoMean))
                 
         ## Plot the average means on a histogram and compare to the theoretical mean
                 ggplot(mns, aes(x=means)) + 
                         geom_histogram(col = "white", fill = "#68AFEA") +
-                        scale_x_continuous(name = "Average Mean", breaks=seq(0, 8, 1)) +
-                        labs(y = "Frequency") +
-                        geom_vline(aes(xintercept=theoMean), color="blue", linetype="dashed", size=1) +
-                        labs(title="Distribution of the averages of 40 exponentials over 1000 simulations")
+                        scale_x_continuous(breaks=seq(0, 10, 1)) +
+                        geom_vline(data = central_means, aes(xintercept = value, color = statistic)) +
+                        scale_color_manual(values = c("dark blue", "red"), name = NULL) +
+                        #geom_text(aes(label = paste(central_means$statistic, " = ", central_means$value)), 
+                                  #size = 3, parse = TRUE) +
+                        labs(title="Distribution of the averages of 40 exponentials over 1000 simulations", 
+                             x = "Average Mean", y = "Frequency")
+
 ```
 
 ## Comparing the Variances
@@ -67,14 +71,23 @@ Variance of the exponential distribution is (1/lambda )^2 or 25 in this case.
 Plot histogram of average variances and add a line to show the theoretical variance.
 
 ```{r plotVars}
-        ## Calculate the theoretical variance
+        ## Calculate the distribution and theoretical variances and store in a dataframe to be used in ggplot
+                distVar <- mean(vars)
                 theoVar <- (1/lambda)^2
+                
+                central_mean_var <- data.frame(statistic = c("Distribution Mean", "Theoretical Mean"),
+                             value = c(distMean, theoMean))
+                
         ## Plot the average variances on a histogram and compare to the theoretical variance
                 ggplot(vrs, aes(x=vars)) + 
                         geom_histogram(col = "white", fill = "#85CD8F") +
-                        labs(x = "Average Variance", y = "Frequency") +
-                        geom_vline(aes(xintercept=theoVar), color="#265B2F", linetype="dashed", size=1) +
-                        labs(title="Distribution of the variances of 40 exponentials over 1000 simulations")
+                        #scale_x_continuous(breaks=seq(0, 120, 1)) +
+                        geom_vline(data = central_mean_var, aes(xintercept = value, color = statistic)) +
+                        scale_color_manual(values = c("dark blue", "red"), name = NULL) +
+                        labs(title="Distribution of the variances of 40 exponentials over 1000 simulations", 
+                             x = "Average Variance", y = "Frequency")
+                        
+                        
 ```
 
 
