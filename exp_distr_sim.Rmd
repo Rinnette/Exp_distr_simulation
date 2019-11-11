@@ -2,7 +2,9 @@
 title: "Investigation of the exponential distribution"
 author: "Rinnette Ramdhanie"
 date: "8 November 2019"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -11,7 +13,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r setupLib, warning = FALSE, message = FALSE}
         library(ggplot2)
+        library(ggpubr)
         lambda <- 0.2
+        numexp <- 40
 ```
 
 ## Overview
@@ -75,8 +79,8 @@ Plot histogram of average variances and add a line to show the theoretical varia
                 distVar <- mean(vars)
                 theoVar <- (1/lambda)^2
                 
-                central_mean_var <- data.frame(statistic = c("Distribution Mean", "Theoretical Mean"),
-                             value = c(distMean, theoMean))
+                central_mean_var <- data.frame(statistic = c("Sample Variance", "Theoretical Variance"),
+                             value = c(distVar, theoVar))
                 
         ## Plot the average variances on a histogram and compare to the theoretical variance
                 ggplot(vrs, aes(x=vars)) + 
@@ -87,9 +91,36 @@ Plot histogram of average variances and add a line to show the theoretical varia
                         labs(title="Distribution of the variances of 40 exponentials over 1000 simulations", 
                              x = "Average Variance", y = "Frequency")
                         
-                        
 ```
 
+## Showing that the simulated distribution is normal
 
+```{r plotDistr}
+        
+        # Plot the distribution of 1000 random exponentials
+                distr1000 <- data.frame(outcome = rexp(1000, lambda))
+                distr1000_plot <- ggplot(distr1000, aes(x=outcome)) +
+                        geom_histogram(col = "white", fill = "#006FA4") +
+                        labs(title = "Distribution of 1000 random exponentials", x = "Random Outcomes", y = "Frequency")
+
+        # Plot the distribution of 1000 averages of 40 random exponentials
+                distr1000_40_plot <- ggplot(mns, aes(x=means)) +
+                        geom_histogram(aes(y=..density..), col = "white", fill = "#0091D7") +
+                        stat_function(fun = dnorm, args = list(mean = 1/lambda, sd = 1/(lambda*sqrt(numexp))), 
+                                      size = 2) +
+                        labs(title = "Distribution of 1000 averages of 40 random exponentials", 
+                             x = "Average Means")
+        
+        # Display in one panel
+                distr_panel <- ggarrange(distr1000_plot, distr1000_40_plot, align = "h")
+                
+                        
+
+#par(mfrow = c(2,1))
+        #hist(rexp(1000, lambda), main = "Distribution of 1000 random exponentials", xlab = "Random Outcomes", 
+         #    col = "#006FA4")
+        #hist(means, main = "Distribution of 1000 averages")
+
+```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
