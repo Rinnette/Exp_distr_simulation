@@ -12,28 +12,32 @@ knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ```{r setupLib, echo = FALSE, warning = FALSE, message = FALSE}
-        library(ggplot2)
-        library(ggpubr)
+
+        # Load libraries to be used in the report
+                library(ggplot2)
+                library(ggpubr)
 ```
 
 ## Overview
-This report investigates the exponential distribution in R.  The average of 40 random simulations was found one thousand times and the sample mean and variance were compared to the theoretical mean and variance.  It was found that the sample statistics very closely matched the theoretical values.  These averages were then normalised and plotted on a histogram and it was found that it approximated the standard normal distribution which conforms with the Central Limit Theorem.
+This report investigates the exponential distribution in R.  The means and variances of 40 random simulations were calculated one thousand times and the center of the distributions for these values were compared to the theoretical mean and variance for the exponential distribution.  It was found that the sample statistics very closely matched the theoretical values.  The average means were then normalised and plotted on a histogram and the resulting distribution approximated the standard normal distribution.  This conforms with the Central Limit Theorem.
 
 
 ## Simulations
 Forty simulations were generated one thousand times using the rexp() function in R. The rate parameter for the exponential distribution, called lambda in this report, was set to 0.2 in this investigation.  For each group of 40 variates, the mean and variance was calculated.  Both the mean and standard deviation is equal to $\frac{1}{lambda}$.
 
 ```{r setupVars}
+
         ## Set up variables to be used in the report
-        lambda <- 0.2
-        numexp <- 40
-        meanexp <- 1/lambda
-        varexp <- (1/lambda)^2
+                lambda <- 0.2
+                numexp <- 40
+                meanexp <- 1/lambda
+                varexp <- (1/lambda)^2
 ```
 
 ```{r simDistr}
-        ## Simulate 40 exponentials one thousand times and find the 
-        ## average means and variances.
+
+        ## Simulate 40 exponentials one thousand times and find the average means and
+        ## variances.
                 set.seed(11)
                 means <- NULL
                 for (i in 1:1000) means = c(means, mean(rexp(40, 0.2)))
@@ -48,6 +52,7 @@ Forty simulations were generated one thousand times using the rexp() function in
 The theoretical mean of the exponential distribution is $\frac{1}{lambda}$ or $\frac{1}{0.2} = 5$.  A histogram was used to show the distribution of the average means and how it compares to the theoretical mean.
 
 ```{r plotMeans, warning = FALSE, message = FALSE, fig.width=7,fig.height=2.5}
+
         ## Calculate the distribution and theoretical means and store in a dataframe
                 distMean <- mean(means)
                 theoMean <- 1/lambda
@@ -74,6 +79,7 @@ The distribution is centered at about 4.9 which is very close to the theoretical
 The theoretical variance of the exponential distribution is $\frac{1}{lambda}^{2}$.  In this case $\frac{1}{0.2}^{2}$ or 25.  A histogram was used to show the distribution of the average variances and how it compares to the theoretical variance.
 
 ```{r plotVars, warning = FALSE, message = FALSE, fig.width=7,fig.height=2.5}
+
         ## Calculate the distribution and theoretical variances and store in a dataframe
                 distVar <- mean(vars)
                 theoVar <- (1/lambda)^2
@@ -90,18 +96,20 @@ The theoretical variance of the exponential distribution is $\frac{1}{lambda}^{2
                              1000 simulations", x = "Average Variance", y = "Frequency")
 ```
 
-The histogram shows the variability of the sample means. The centre of the distribution of the variances is about 24.9 which is almost the same as the theoretical mean of 25.  The lines showing the x intercept of these figures are almost on top of each other as the values are very close.
+The centre of the distribution of the variances is about 24.9 which is almost the same as the theoretical mean of 25.  The lines showing the x intercept of these figures are almost on top of each other as the values are very close.
 
 
 ## Distribution
 
-In order to show whether the distribution of the one thousand averages of 40 random exponentials is approximately normal, the normalised averages were found and plotted on a histogram.  This was done by subtracting the theoretical mean from each average and the result was divided by the standard error of the mean. 
+In order to show whether the distribution of the one thousand averages of 40 random exponentials is approximately normal, the normalised averages were found and plotted on a histogram.  This was done by subtracting the theoretical mean from each average then the result was divided by the standard error of the mean. 
 
 The standard error is $\sqrt{\frac{variance}{n}}$ where variance is 25 and n is 40 in this case.
 
 ```{r normalise}
-        se <- sqrt(varexp/numexp)  #standard error        
-        norm <- (means-meanexp)/se #normalised averages
+
+        # Normalising the averages
+                se <- sqrt(varexp/numexp)  #standard error        
+                norm <- (means-meanexp)/se #normalised averages
 ```
 
 The second histogram displays the distribution of these normalized averages.
