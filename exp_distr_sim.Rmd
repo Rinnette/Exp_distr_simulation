@@ -90,7 +90,7 @@ The theoretical variance of the exponential distribution is $\frac{1}{lambda}^{2
                              1000 simulations", x = "Average Variance", y = "Frequency")
 ```
 
-The histogram shows the variability of the sample means. The centre of the distribution of the variances is about 24.9 which is almost the same as the theoretical mean of 25.  The lines showing the x intercept of these figures are almost on top of each other as the values are so close.
+The histogram shows the variability of the sample means. The centre of the distribution of the variances is about 24.9 which is almost the same as the theoretical mean of 25.  The lines showing the x intercept of these figures are almost on top of each other as the values are very close.
 
 
 ## Distribution
@@ -134,9 +134,9 @@ The first histogram in the panel shows the distribution of one thousand random e
                                         color = "navy blue", face = "bold", size = 12))
 ```
 
-The first plot shows an exponential distribution.
+The first plot shows the probability density function of the exponential distribution which is convex and decreases in frequency as the random values increase.
 
-Since the shape of the second plot looks like a bell curve, this means that the distribution is approximately standard normal which conforms with the Central Limit Theorem.
+Since the shape of the second plot looks like a bell curve, this means that the distribution is approximately standard normal which complies with the Central Limit Theorem.
 
 ## Appendix
 ```{r ref.label=knitr::all_labels(), echo=TRUE, eval=FALSE}
